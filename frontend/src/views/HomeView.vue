@@ -18,7 +18,7 @@ import { CiSearch } from 'vue-icons-plus/ci'
           <th>Name</th>
           <th>Price</th>
           <th>Stock</th>
-          <th>Status</th>
+          <th>Type</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@ import { CiSearch } from 'vue-icons-plus/ci'
           <td>Solar Panel</td>
           <td>R$200</td>
           <td>50</td>
-          <td class="cancelled">Cancelado</td>
+          <td>Tool</td>
         </tr>
 
         <tr>
@@ -35,7 +35,7 @@ import { CiSearch } from 'vue-icons-plus/ci'
           <td>Solar Panel</td>
           <td>R$200</td>
           <td>50</td>
-          <td class="in-progress">Em andamento</td>
+          <td>Packaging</td>
         </tr>
 
         <tr>
@@ -43,7 +43,7 @@ import { CiSearch } from 'vue-icons-plus/ci'
           <td>Solar Panel</td>
           <td>R$200</td>
           <td>50</td>
-          <td class="delivered">Entregue</td>
+          <td>Accessory</td>
         </tr>
       </tbody>
     </table>

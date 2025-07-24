@@ -3,10 +3,10 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - JR-Victor-Matheus
   pull_request:
     branches:
-      - main
+      - JR-Victor-Matheus
 
 jobs:
   build:
