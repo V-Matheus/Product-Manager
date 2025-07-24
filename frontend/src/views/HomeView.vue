@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/Button.vue'
 import { CiSearch } from 'vue-icons-plus/ci'
 </script>
 
@@ -47,8 +48,9 @@ import { CiSearch } from 'vue-icons-plus/ci'
         </tr>
       </tbody>
     </table>
-
-    <button>Add Product</button>
+    <div class="actions">
+      <Button variant="primary" value="Add Product" />
+    </div>
   </main>
 </template>
 
@@ -103,30 +105,9 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
-.delivered {
-  color: #24c72f;
-}
-
-.cancelled {
-  color: #f24c4c;
-}
-
-.in-progress {
-  color: #f2a424;
-}
-
-button {
+.actions {
   display: flex;
-  padding: 0.625rem 1rem;
-
-  background: #248cf2;
-  border-radius: 8px;
-
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 21px;
-
-  color: #ffffff;
+  gap: 1rem;
   margin-left: auto;
 }
 </style>

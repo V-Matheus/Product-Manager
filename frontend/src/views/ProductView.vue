@@ -2,6 +2,8 @@
 import { useRoute } from 'vue-router'
 import { reactive } from 'vue'
 import Input from '@/components/Input.vue'
+import Select from '@/components/Select.vue'
+import Button from '@/components/Button.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -44,22 +46,16 @@ function handleSubmit() {
         v-model="formData.stock"
       />
 
-      <label>
-        Type
+      <Select
+        label="Type"
+        :options="['Finished Product', 'Raw Material', 'Component']"
+        v-model="formData.type"
+      />
 
-        <select v-model="formData.type">
-          <option value="finished-product">Finished Product</option>
-          <option value="raw-material">Raw Material</option>
-          <option value="component">Component</option>
-          <option value="consumable">Consumable</option>
-          <option value="tool">Tool</option>
-          <option value="packaging">Packaging</option>
-          <option value="service">Service</option>
-          <option value="spare-part">Spare Part</option>
-          <option value="accessory">Accessory</option>
-          <option value="semi-finished-product">Semi-finished Product</option>
-        </select>
-      </label>
+      <div class="actions">
+        <Button variant="secondary" value="Back to home"></Button>
+        <Button variant="primary" value="Add Product"></Button>
+      </div>
     </form>
   </main>
 </template>
@@ -106,37 +102,9 @@ form {
   gap: 1rem;
 }
 
-label {
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  font-family: 'Inter' sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-
-  color: #121417;
-}
-
-input,
-select {
-  background: #ffffff;
-  border: 1px solid #dbe0e6;
-  border-radius: 8px;
-  padding: 0.5rem;
-
-  font-family: 'Inter' sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-
-  color: #61758a;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border: 2px solid #121417;
+  gap: 1rem;
+  margin-left: auto;
 }
 </style>

@@ -26,3 +26,7 @@ jobs:
         run: |
           sleep 15
           docker compose ps
+
+      - name: Run tests
+        run: |
+          docker compose exec frontend yarn test:unit

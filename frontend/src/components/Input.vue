@@ -35,8 +35,7 @@ label {
   color: #121417;
 }
 
-input,
-select {
+input {
   background: #ffffff;
   border: 1px solid #dbe0e6;
   border-radius: 8px;
@@ -50,8 +49,7 @@ select {
   color: #61758a;
 }
 
-input:focus,
-select:focus {
+input:focus {
   outline: none;
   border: 2px solid #121417;
 }
