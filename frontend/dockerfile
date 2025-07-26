@@ -1,14 +1,21 @@
-FROM node:22
+FROM node:22 AS builder
 
-WORKDIR /app
+WORKDIR /frontend
 
 COPY package*.json ./
-RUN npm install
+RUN yarn install
 
 COPY . .
+RUN yarn build
 
-RUN npm run build
+FROM node:22
+
+WORKDIR /frontend
+
 RUN npm install -g serve
+
+COPY --from=builder /frontend/dist ./dist
+COPY --from=builder /frontend/package*.json ./
 
 EXPOSE 3000
 
