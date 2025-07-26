@@ -1,4 +1,4 @@
-FROM node:22 AS builder
+FROM node:22
 
 WORKDIR /frontend
 
@@ -6,17 +6,8 @@ COPY package*.json ./
 RUN yarn install
 
 COPY . .
-RUN yarn build
-
-FROM node:22
-
-WORKDIR /frontend
-
-RUN npm install -g serve
-
-COPY --from=builder /frontend/dist ./dist
-COPY --from=builder /frontend/package*.json ./
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Comando padrão: inicia o servidor de desenvolvimento
+CMD ["yarn", "dev"]

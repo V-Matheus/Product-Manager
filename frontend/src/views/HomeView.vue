@@ -1,6 +1,18 @@
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
 import { CiSearch } from 'vue-icons-plus/ci'
+import Button from '@/components/Button.vue'
+import { onMounted, reactive } from 'vue'
+import { Product } from '../services/types'
+import { getProducts } from '../services/products'
+
+const products = reactive<Product[]>([])
+
+onMounted(async () => {
+  const response = await getProducts()
+  products.push(...response)
+})
+
+console.log('Products loaded:', products)
 </script>
 
 <template>
@@ -23,28 +35,12 @@ import { CiSearch } from 'vue-icons-plus/ci'
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Solar Panel</td>
-          <td>R$200</td>
-          <td>50</td>
-          <td>Tool</td>
-        </tr>
-
-        <tr>
-          <td>1</td>
-          <td>Solar Panel</td>
-          <td>R$200</td>
-          <td>50</td>
-          <td>Packaging</td>
-        </tr>
-
-        <tr>
-          <td>1</td>
-          <td>Solar Panel</td>
-          <td>R$200</td>
-          <td>50</td>
-          <td>Accessory</td>
+        <tr v-for="(product, index) in products" :key="index">
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>R${{ product.price.toFixed(2) }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.type }}</td>
         </tr>
       </tbody>
     </table>
