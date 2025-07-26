@@ -5,6 +5,7 @@ defineProps<{
   modelValue?: string | number
   type?: string
 }>()
+defineEmits(['update:modelValue'])
 </script>
 
 <template>
@@ -12,11 +13,11 @@ defineProps<{
     {{ label }}
 
     <input
-      :value="modelValue"
-      :placeholder="placeholder"
       :type="type"
+      :placeholder="placeholder"
+      :value="modelValue"
       min="0"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      @input="$emit('update:modelValue', $event.target.value)"
     />
   </label>
 </template>

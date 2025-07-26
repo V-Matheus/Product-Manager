@@ -1,22 +1,56 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import Button from '@/components/Button.vue'
+import { createProduct } from '../services/products'
+import { z } from 'zod'
+import { useForm, useField } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { ref } from 'vue'
 
-const route = useRoute()
-const id = route.params.id
+const router = useRouter()
+const submitted = ref(false)
 
-const formData = reactive({
-  name: '',
-  price: 0,
-  stock: 0,
-  type: '',
+const productSchema = z.object({
+  name: z.string().min(1, 'Nome obrigatório'),
+  price: z.preprocess((val) => Number(val), z.number().min(1, 'Valor mínimo é de 1')),
+  stock: z.preprocess((val) => Number(val), z.number().min(1, 'Estoque mínimo é de 1')),
+  type: z.string().min(1, 'Tipo obrigatório'),
 })
 
-function handleSubmit() {
-  console.log('Form submitted for product ID:', id)
+const { handleSubmit, values } = useForm({
+  validationSchema: toTypedSchema(productSchema),
+  initialValues: {
+    name: '',
+    price: 0,
+    stock: 0,
+    type: '',
+  },
+})
+
+const { value: name, errorMessage: nameError } = useField('name')
+const { value: price, errorMessage: priceError } = useField('price')
+const { value: stock, errorMessage: stockError } = useField('stock')
+const { value: type, errorMessage: typeError } = useField('type')
+
+const onSubmit = handleSubmit(
+  async (formData) => {
+    submitted.value = true
+    try {
+      await createProduct(formData)
+      router.push('/')
+    } catch (error) {
+      console.error('Error create product:', error)
+    }
+  },
+  (validationErrors) => {
+    submitted.value = true
+  },
+)
+
+function goToHome() {
+  router.push(`/`)
 }
 </script>
 
@@ -27,34 +61,26 @@ function handleSubmit() {
       <p>Modify the details of the selected product.</p>
     </section>
 
-    <form action="">
-      <Input type="text" label="Product Name" placeholder="Enter Name" v-model="formData.name" />
+    <form @submit.prevent="onSubmit">
+      <Input type="text" label="Product Name" placeholder="Enter Name" v-model="name" />
+      <span v-if="submitted && nameError" class="error">{{ nameError }}</span>
 
-      <Input
-        type="number"
-        min="0"
-        label="Price"
-        placeholder="Enter Price"
-        v-model="formData.price"
-      />
+      <Input type="number" min="0" label="Price" placeholder="Enter Price" v-model="price" />
+      <span v-if="submitted && priceError" class="error">{{ priceError }}</span>
 
-      <Input
-        type="number"
-        min="0"
-        label="Stock"
-        placeholder="Enter Stock"
-        v-model="formData.stock"
-      />
+      <Input type="number" min="0" label="Stock" placeholder="Enter Stock" v-model="stock" />
+      <span v-if="submitted && stockError" class="error">{{ stockError }}</span>
 
       <Select
         label="Type"
         :options="['Finished Product', 'Raw Material', 'Component']"
-        v-model="formData.type"
+        v-model="type"
       />
+      <span v-if="submitted && typeError" class="error">{{ typeError }}</span>
 
       <div class="actions">
-        <Button variant="secondary" value="Back to home"></Button>
-        <Button variant="primary" value="Add Product"></Button>
+        <Button @click="goToHome()" variant="secondary" value="Back to home"></Button>
+        <Button type="submit" variant="primary" value="Add Product"></Button>
       </div>
     </form>
   </main>
@@ -106,5 +132,12 @@ form {
   display: flex;
   gap: 1rem;
   margin-left: auto;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 </style>

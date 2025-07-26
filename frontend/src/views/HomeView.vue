@@ -4,13 +4,23 @@ import Button from '@/components/Button.vue'
 import { onMounted, reactive } from 'vue'
 import { Product } from '../services/types'
 import { getProducts } from '../services/products'
+import { useRouter } from 'vue-router'
 
 const products = reactive<Product[]>([])
+const router = useRouter()
 
 onMounted(async () => {
-  const response = await getProducts()
-  products.push(...response)
+  try {
+    const response = await getProducts()
+    products.push(...response)
+  } catch (error) {
+    console.error('Failed to load products:', error)
+  }
 })
+
+function goToCreateProduct(id: string = '') {
+  router.push(`/product/${id}`)
+}
 
 console.log('Products loaded:', products)
 </script>
@@ -35,7 +45,11 @@ console.log('Products loaded:', products)
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(product, index) in products" :key="index">
+        <tr
+          v-for="(product, index) in products"
+          :key="index"
+          @click="goToCreateProduct(product.id)"
+        >
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
           <td>R${{ product.price.toFixed(2) }}</td>
@@ -45,7 +59,7 @@ console.log('Products loaded:', products)
       </tbody>
     </table>
     <div class="actions">
-      <Button variant="primary" value="Add Product" />
+      <Button @click="goToCreateProduct()" variant="primary" value="Add Product" />
     </div>
   </main>
 </template>
