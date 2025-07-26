@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import Button from '@/components/Button.vue'
-import { createProduct } from '../services/products'
+import { createProduct, getProductById, updateProduct } from '../services/products'
 import { z } from 'zod'
 import { useForm, useField } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { Product } from '../services/types'
 
 const router = useRouter()
+const route = useRoute()
+const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+const productById = ref<Product>({
+  name: '',
+  price: 0,
+  stock: 0,
+  type: '',
+})
 const submitted = ref(false)
 
 const productSchema = z.object({
@@ -38,6 +47,12 @@ const onSubmit = handleSubmit(
   async (formData) => {
     submitted.value = true
     try {
+      if (id) {
+        await updateProduct(id, formData)
+        router.push('/')
+        return
+      }
+
       await createProduct(formData)
       router.push('/')
     } catch (error) {
@@ -52,6 +67,22 @@ const onSubmit = handleSubmit(
 function goToHome() {
   router.push(`/`)
 }
+
+onMounted(async () => {
+  if (id) {
+    try {
+      const response = await getProductById(id)
+      productById.value = response
+      name.value = response.name
+      price.value = response.price
+      stock.value = response.stock
+      type.value = response.type
+      console.log('Product loaded:', productById.value)
+    } catch (error) {
+      console.error('Failed to load product:', error)
+    }
+  }
+})
 </script>
 
 <template>

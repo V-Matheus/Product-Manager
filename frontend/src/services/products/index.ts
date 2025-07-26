@@ -33,7 +33,7 @@ export const createProduct = async (product: Product): Promise<Product> => {
 
 export const updateProduct = async (id: string, product: Product): Promise<Product> => {
   try {
-    const response = await api.put(`/products/${id}`, product)
+    const response = await api.patch(`/products/${id}`, product)
     return response.data
   } catch (error) {
     console.error('Error fetching products:', error)
