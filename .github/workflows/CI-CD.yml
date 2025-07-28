@@ -27,6 +27,12 @@ jobs:
           sleep 15
           docker compose ps
 
-      - name: Run tests
+      - name: Install dependencies frontend
         run: |
-          docker compose exec frontend yarn test:unit
+          cd frontend
+          yarn install
+
+      - name: Run tests frontend
+        run: |
+          cd frontend
+          yarn test:unit
