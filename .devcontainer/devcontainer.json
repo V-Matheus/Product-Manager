@@ -3,11 +3,7 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "backend",
   "workspaceFolder": "/backend",
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "rangav.vscode-thunder-client"
-  ],
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   }

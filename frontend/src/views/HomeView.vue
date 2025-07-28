@@ -21,8 +21,6 @@ onMounted(async () => {
 function goToCreateProduct(id: string = '') {
   router.push(`/product/${id}`)
 }
-
-console.log('Products loaded:', products)
 </script>
 
 <template>
@@ -102,6 +100,11 @@ h1 {
 table {
   border: 1px solid #dbe0e6;
   border-radius: 8px;
+}
+
+td {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 td,

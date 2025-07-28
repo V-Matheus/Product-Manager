@@ -1,12 +1,25 @@
 <script setup lang="ts">
 defineProps<{
   value?: string
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'danger'
 }>()
+
+function getClass(variant?: string) {
+  switch (variant) {
+    case 'primary':
+      return 'primary'
+    case 'secondary':
+      return 'secondary'
+    case 'danger':
+      return 'danger'
+    default:
+      return 'primary'
+  }
+}
 </script>
 
 <template>
-  <button :class="variant === 'primary' ? 'primary' : 'secondary'" @click="$emit('click')">
+  <button :class="getClass(variant)" @click="$emit('click')">
     {{ value }}
   </button>
 </template>
@@ -36,5 +49,17 @@ defineProps<{
   font-size: 14px;
   line-height: 21px;
   color: #248cf2;
+}
+
+.danger {
+  display: flex;
+  padding: 0.625rem 1rem;
+  background: #d32f2f;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  color: #fff;
+  border: none;
 }
 </style>

@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import Button from '@/components/Button.vue'
-import { createProduct, getProductById, updateProduct } from '../services/products'
+import { createProduct, deleteProduct, getProductById, updateProduct } from '../services/products'
 import { z } from 'zod'
 import { useForm, useField } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -83,12 +83,22 @@ onMounted(async () => {
     }
   }
 })
+
+async function onDelete() {
+  if (!id) return
+  try {
+    await deleteProduct(id)
+    router.push('/')
+  } catch (error) {
+    console.error('Error deleting product:', error)
+  }
+}
 </script>
 
 <template>
   <main>
     <section class="title">
-      <h1>Add New Product</h1>
+      <h1>{{ id ? 'Edit Product' : 'Add New Product' }}</h1>
       <p>Modify the details of the selected product.</p>
     </section>
 
@@ -110,6 +120,7 @@ onMounted(async () => {
       <span v-if="submitted && typeError" class="error">{{ typeError }}</span>
 
       <div class="actions">
+        <Button v-if="id" @click="onDelete" variant="danger" value="Delete Product" />
         <Button @click="goToHome()" variant="secondary" value="Back to home"></Button>
         <Button type="submit" variant="primary" value="Add Product"></Button>
       </div>
@@ -140,7 +151,6 @@ h1 {
   font-weight: 700;
   font-size: 32px;
   line-height: 40px;
-
   color: #121417;
 }
 
@@ -149,7 +159,6 @@ p {
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
-
   color: #61758a;
 }
 
