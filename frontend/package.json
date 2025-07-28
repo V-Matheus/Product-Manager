@@ -26,6 +26,7 @@
     "vue": "^3.5.17",
     "vue-icons-plus": "^0.1.8",
     "vue-router": "^4.5.1",
+    "vue-toastification": "2.0.0-rc.5",
     "zod": "^4.0.10"
   },
   "devDependencies": {
