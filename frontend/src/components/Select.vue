@@ -1,24 +1,34 @@
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+
+const props = defineProps<{
   label?: string
   options?: Array<string>
   modelValue?: string | number
+  value?: string | number
+  error?: string
 }>()
+const emit = defineEmits(['update:modelValue', 'update:value'])
+
+const currentValue = computed({
+  get: () => props.value ?? props.modelValue,
+  set: (val) => {
+    emit('update:modelValue', val)
+    emit('update:value', val)
+  },
+})
 </script>
 
 <template>
   <label>
     {{ label }}
-
-    <select
-      :value="modelValue"
-      @change="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    >
+    <select v-model="currentValue">
       <option v-for="option in options" :key="option" :value="option">
         {{ option }}
       </option>
     </select>
   </label>
+  <span v-if="error" class="error">{{ error }}</span>
 </template>
 
 <style scoped>
@@ -54,5 +64,12 @@ input:focus,
 select:focus {
   outline: none;
   border: 2px solid #121417;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 </style>

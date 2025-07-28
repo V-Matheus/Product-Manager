@@ -2,7 +2,7 @@
 import { CiSearch } from 'vue-icons-plus/ci'
 import Button from '@/components/Button.vue'
 import { onMounted, reactive } from 'vue'
-import { Product } from '../services/types'
+import type { Product } from '../services/types'
 import { getProducts } from '../services/products'
 import { useRouter } from 'vue-router'
 
@@ -50,7 +50,13 @@ function goToCreateProduct(id: string = '') {
         >
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
-          <td>R${{ product.price.toFixed(2) }}</td>
+          <td>
+            R$ {{
+              typeof product.price === 'number'
+                ? product.price.toFixed(2)
+                : '--'
+            }}
+          </td>
           <td>{{ product.stock }}</td>
           <td>{{ product.type }}</td>
         </tr>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   value?: string
   variant?: 'primary' | 'secondary' | 'danger'
+  type?: 'button' | 'submit' | 'reset' | undefined
 }>()
+
+const emit = defineEmits(['click'])
 
 function getClass(variant?: string) {
   switch (variant) {
@@ -16,10 +19,19 @@ function getClass(variant?: string) {
       return 'primary'
   }
 }
+
+function handleClick(event: MouseEvent) {
+  if (props.type !== 'submit') {
+    emit('click', event)
+  }
+}
 </script>
 
 <template>
-  <button :class="getClass(variant)" @click="$emit('click')">
+  <button :type="type" :class="getClass(variant)" v-if="type !== 'submit'" @click="handleClick">
+    {{ value }}
+  </button>
+  <button :type="type" :class="getClass(variant)" v-else>
     {{ value }}
   </button>
 </template>
