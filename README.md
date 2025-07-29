@@ -8,7 +8,8 @@ Sistema completo para gestão de produtos, desenvolvido com Vue 3 no frontend e 
 
 > ![Tela de listagem de produtos](./docs/prints/products.png)
 > ![Tela de cadastro/edição de produto](./docs/prints/edit-product.png)
-> ![Tela de confirmação de exclusão](./docs/prints/add-product.png)
+> ![Tela de adicionar um produto](./docs/prints/add-product.png)
+> ![Tela de confirmação de exclusão](./docs/prints/delete-product.png)
 
 ---
 
