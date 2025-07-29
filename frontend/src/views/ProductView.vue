@@ -10,6 +10,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { onMounted, ref } from 'vue'
 import type { Product } from '../services/types'
 import { Field } from 'vee-validate'
+import Modal from '@/components/modal.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -20,6 +21,7 @@ const productById = ref<Product>({
   stock: 0,
   type: '',
 })
+const showDeleteModal = ref(false)
 
 const productSchema = z.object({
   name: z.string().min(1, 'Nome obrigatório'),
@@ -127,12 +129,26 @@ async function onDelete() {
       </Field>
 
       <div class="actions">
-        <Button v-if="id" @click="onDelete" variant="danger" value="Delete Product" />
+        <Button
+          v-if="id"
+          type="button"
+          @click="showDeleteModal = true"
+          variant="danger"
+          value="Delete Product"
+        />
         <Button @click="goToHome()" variant="secondary" value="Back to home" />
         <Button type="submit" variant="primary" :value="id ? 'Edit' : 'Add Product'" />
       </div>
     </form>
   </main>
+
+  <Modal
+    :open="showDeleteModal"
+    confirmText="Excluir"
+    cancelText="Cancelar"
+    @confirm="showDeleteModal = false; onDelete()"
+    @cancel="showDeleteModal = false"
+  />
 </template>
 
 <style scoped>
